@@ -96,13 +96,13 @@ export interface SearchParams {
   region?: string;
   city?: string;
   area?: string;
-  propertyType?: PropertyType;
+  propertyType?: string;
   minPrice?: number;
   maxPrice?: number;
   bedrooms?: number;
   bathrooms?: number;
   amenities?: string;
-  status?: PropertyStatus;
+  status?: string;
   sort?: string;
   page?: number;
   limit?: number;

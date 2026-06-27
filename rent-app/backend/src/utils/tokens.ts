@@ -35,26 +35,39 @@ export const generateTokens = (userId: string, role: string) => {
   return { accessToken, refreshToken };
 };
 
-export const setTokenCookies = (res: Response, refreshToken: string) => {
+export const setTokenCookies = (res: Response, accessToken: string, refreshToken: string) => {
   const isProduction = process.env.NODE_ENV === 'production';
-  const cookieOptions = {
-    httpOnly: true,
+  const baseOptions = {
+    httpOnly: false,
     secure: isProduction,
     sameSite: isProduction ? ('none' as const) : ('lax' as const),
-    maxAge: 7 * 24 * 60 * 60 * 1000,
     path: '/',
   };
 
-  res.cookie('refreshToken', refreshToken, cookieOptions);
+  // Access token as regular cookie (readable by frontend for Authorization header)
+  res.cookie('accessToken', accessToken, {
+    ...baseOptions,
+    httpOnly: false,
+    maxAge: 15 * 60 * 1000, // 15 minutes
+  });
+
+  // Refresh token as httpOnly cookie (not accessible by frontend JS)
+  res.cookie('refreshToken', refreshToken, {
+    ...baseOptions,
+    httpOnly: true,
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+  });
 };
 
 export const clearTokenCookies = (res: Response) => {
   const isProduction = process.env.NODE_ENV === 'production';
-  res.cookie('refreshToken', '', {
-    httpOnly: true,
+  const baseOptions = {
+    httpOnly: false,
     secure: isProduction,
     sameSite: isProduction ? ('none' as const) : ('lax' as const),
-    expires: new Date(0),
     path: '/',
-  });
+  };
+
+  res.cookie('accessToken', '', { ...baseOptions, expires: new Date(0) });
+  res.cookie('refreshToken', '', { ...baseOptions, httpOnly: true, expires: new Date(0) });
 };

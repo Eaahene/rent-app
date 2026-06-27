@@ -14,6 +14,12 @@ export const setAccessToken = (token: string | null) => {
   accessToken = token;
 };
 
+function getAccessTokenFromCookie(): string | null {
+  if (typeof document === 'undefined') return null;
+  const match = document.cookie.match(/accessToken=([^;]+)/);
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
 function getRefreshUrl(): string {
   const base = process.env.NEXT_PUBLIC_API_URL || '/api';
   return `${base}/auth/refresh`;
@@ -25,8 +31,9 @@ function isAuthPage(): boolean {
 }
 
 api.interceptors.request.use((config) => {
-  if (accessToken) {
-    config.headers.Authorization = `Bearer ${accessToken}`;
+  const token = accessToken || getAccessTokenFromCookie();
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });

@@ -21,9 +21,7 @@ export const register = catchAsync(async (req: Request, res: Response) => {
   user.refreshToken = tokens.refreshToken;
   await user.save();
 
-  setTokenCookies(res, tokens.refreshToken);
-
-  // Send verification email (non-blocking)
+  setTokenCookies(res, tokens.accessToken, tokens.refreshToken);
   try {
     const verificationToken = crypto.randomBytes(32).toString('hex');
     user.emailVerificationToken = verificationToken;
@@ -67,7 +65,7 @@ export const login = catchAsync(async (req: Request, res: Response) => {
   user.refreshToken = tokens.refreshToken;
   await user.save();
 
-  setTokenCookies(res, tokens.refreshToken);
+  setTokenCookies(res, tokens.accessToken, tokens.refreshToken);
 
   ApiResponse.success(res, {
     user,
@@ -105,7 +103,7 @@ export const refreshToken = catchAsync(async (req: Request, res: Response) => {
   user.refreshToken = tokens.refreshToken;
   await user.save();
 
-  setTokenCookies(res, tokens.refreshToken);
+  setTokenCookies(res, tokens.accessToken, tokens.refreshToken);
 
   ApiResponse.success(res, { accessToken: tokens.accessToken }, 'Token refreshed');
 });

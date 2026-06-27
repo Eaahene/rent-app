@@ -11,6 +11,7 @@ import { PropertyGallery } from '@/components/property/PropertyGallery';
 import { PropertyAmenities } from '@/components/property/PropertyAmenities';
 import { PropertyMap } from '@/components/property/PropertyMap';
 import { SimilarProperties } from '@/components/property/SimilarProperties';
+import { AreaInfo } from '@/components/property/AreaInfo';
 import { EmptyState } from '@/components/feedback/EmptyState';
 import { useProperty, useSimilarProperties, useCheckFavorite, useFavorite } from '@/hooks/useProperties';
 import { useCreateInquiry } from '@/hooks/useInquiries';
@@ -180,6 +181,13 @@ export default function PropertyDetailPage() {
               />
             </CardContent>
           </Card>
+
+          {/* Area Info */}
+          <AreaInfo
+            city={property.city}
+            area={property.area}
+            region={property.region}
+          />
         </div>
 
         {/* Sidebar */}

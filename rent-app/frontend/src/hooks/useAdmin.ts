@@ -74,8 +74,9 @@ export function useApproveProperty() {
   return useMutation({
     mutationFn: ({ id, isApproved }: { id: string; isApproved: boolean }) =>
       adminService.approveProperty(id, isApproved),
-    onSuccess: () => {
+    onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: ['admin', 'properties'] });
+      queryClient.invalidateQueries({ queryKey: ['admin', 'property', variables.id] });
     },
   });
 }

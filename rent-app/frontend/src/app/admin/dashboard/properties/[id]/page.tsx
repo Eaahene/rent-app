@@ -28,7 +28,6 @@ export default function AdminPropertyReviewPage({
       {
         onSuccess: () => {
           toast.success(approved ? 'Property approved' : 'Property rejected');
-          router.push('/admin/dashboard/properties');
         },
       }
     );

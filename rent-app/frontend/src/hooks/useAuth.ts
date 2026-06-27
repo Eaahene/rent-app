@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { authService } from '@/services/auth';
@@ -9,7 +8,7 @@ import { setAccessToken } from '@/services/api';
 import { UserRole } from '@/types';
 
 export function useAuth() {
-  const { user, setUser, setLoading, logout: storeLogout } = useAuthStore();
+  const { user: storeUser, setUser, logout: storeLogout } = useAuthStore();
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -24,13 +23,8 @@ export function useAuth() {
     gcTime: 10 * 60 * 1000,
   });
 
-  useEffect(() => {
-    if (data) {
-      setUser(data);
-    } else if (error) {
-      setUser(null);
-    }
-  }, [data, error, setUser]);
+  const user = error ? null : (data ?? storeUser);
+  const isAuthenticated = !!user;
 
   const loginMutation = useMutation({
     mutationFn: authService.login,
@@ -71,7 +65,7 @@ export function useAuth() {
   return {
     user,
     isLoading,
-    isAuthenticated: !!user,
+    isAuthenticated,
     login: loginMutation.mutate,
     register: registerMutation.mutate,
     logout: logoutMutation.mutate,

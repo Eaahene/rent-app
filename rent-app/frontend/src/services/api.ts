@@ -14,6 +14,11 @@ export const setAccessToken = (token: string | null) => {
   accessToken = token;
 };
 
+function getRefreshUrl(): string {
+  const base = process.env.NEXT_PUBLIC_API_URL || '/api';
+  return `${base}/auth/refresh`;
+}
+
 function isAuthPage(): boolean {
   if (typeof window === 'undefined') return false;
   return /^\/(login|register|forgot-password|reset-password|verify-email)/.test(window.location.pathname);
@@ -41,7 +46,7 @@ api.interceptors.response.use(
 
       try {
         const { data } = await axios.post(
-          '/api/auth/refresh',
+          getRefreshUrl(),
           {},
           { withCredentials: true }
         );

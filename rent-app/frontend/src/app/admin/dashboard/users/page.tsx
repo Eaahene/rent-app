@@ -25,10 +25,10 @@ export default function AdminUsersPage() {
 
   const users = data?.data || [];
 
-  const handleVerify = (id: string) => {
-    verifyLandlord.mutate(id, {
-      onSuccess: () => toast.success('Landlord verified'),
-      onError: () => toast.error('Failed to verify landlord'),
+  const handleVerify = (id: string, isVerified: boolean) => {
+    verifyLandlord.mutate({ id, isVerified }, {
+      onSuccess: () => toast.success(isVerified ? 'Landlord verified' : 'Landlord unverified'),
+      onError: () => toast.error('Failed to update verification'),
     });
   };
 
@@ -65,7 +65,7 @@ export default function AdminUsersPage() {
         <Select
           value={role}
           onValueChange={(value) => {
-            setRole(value);
+            setRole(value === 'all' ? '' : value);
             setPage(1);
           }}
         >

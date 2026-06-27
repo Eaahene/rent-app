@@ -39,7 +39,8 @@ export function useVerifyLandlord() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: adminService.verifyLandlord,
+    mutationFn: ({ id, isVerified }: { id: string; isVerified: boolean }) =>
+      adminService.verifyLandlord(id, isVerified),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin'] });
     },
@@ -53,6 +54,17 @@ export function useAllProperties(params?: { page?: number; status?: string; sear
       const response = await adminService.getAllProperties(params);
       return response;
     },
+  });
+}
+
+export function useAdminProperty(id: string) {
+  return useQuery({
+    queryKey: ['admin', 'property', id],
+    queryFn: async () => {
+      const response = await adminService.getPropertyById(id);
+      return response;
+    },
+    enabled: !!id,
   });
 }
 

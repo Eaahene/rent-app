@@ -16,13 +16,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { MoreHorizontal, Shield, Ban, Check } from 'lucide-react';
+import { MoreHorizontal, Shield, ShieldOff, Ban, Check } from 'lucide-react';
 import { User } from '@/types';
 import { formatDate } from '@/lib/utils';
 
 interface UserTableProps {
   users: User[];
-  onVerify?: (id: string) => void;
+  onVerify?: (id: string, isVerified: boolean) => void;
   onToggleStatus?: (id: string, isActive: boolean) => void;
 }
 
@@ -39,7 +39,7 @@ export function UserTable({ users, onVerify, onToggleStatus }: UserTableProps) {
   };
 
   return (
-    <div className="rounded-md border">
+    <div className="rounded-md border overflow-x-auto">
       <Table>
         <TableHeader>
           <TableRow>
@@ -89,10 +89,19 @@ export function UserTable({ users, onVerify, onToggleStatus }: UserTableProps) {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    {user.role === 'landlord' && !user.isVerified && (
-                      <DropdownMenuItem onClick={() => onVerify?.(user._id)}>
-                        <Shield className="h-4 w-4 mr-2" />
-                        Verify Landlord
+                    {user.role === 'landlord' && (
+                      <DropdownMenuItem onClick={() => onVerify?.(user._id, !user.isVerified)}>
+                        {user.isVerified ? (
+                          <>
+                            <ShieldOff className="h-4 w-4 mr-2" />
+                            Unverify Landlord
+                          </>
+                        ) : (
+                          <>
+                            <Shield className="h-4 w-4 mr-2" />
+                            Verify Landlord
+                          </>
+                        )}
                       </DropdownMenuItem>
                     )}
                     <DropdownMenuItem

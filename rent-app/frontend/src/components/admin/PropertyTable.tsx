@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -17,7 +18,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { MoreHorizontal, Check, X, Star, Trash2 } from 'lucide-react';
+import { MoreHorizontal, Check, X, Star, Trash2, Eye } from 'lucide-react';
 import { Property } from '@/types';
 import { formatPrice, timeAgo } from '@/lib/utils';
 
@@ -30,7 +31,7 @@ interface PropertyTableProps {
 
 export function PropertyTable({ properties, onApprove, onToggleFeatured, onDelete }: PropertyTableProps) {
   return (
-    <div className="rounded-md border">
+    <div className="rounded-md border overflow-x-auto">
       <Table>
         <TableHeader>
           <TableRow>
@@ -57,7 +58,12 @@ export function PropertyTable({ properties, onApprove, onToggleFeatured, onDelet
                     />
                   </div>
                   <div>
-                    <p className="font-medium line-clamp-1">{property.title}</p>
+                    <Link
+                      href={`/admin/dashboard/properties/${property._id}`}
+                      className="font-medium line-clamp-1 hover:underline"
+                    >
+                      {property.title}
+                    </Link>
                     <p className="text-xs text-muted-foreground">
                       {property.area}, {property.city}
                     </p>
@@ -100,6 +106,12 @@ export function PropertyTable({ properties, onApprove, onToggleFeatured, onDelet
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
+                    <DropdownMenuItem asChild>
+                      <Link href={`/admin/dashboard/properties/${property._id}`}>
+                        <Eye className="h-4 w-4 mr-2" />
+                        View Details
+                      </Link>
+                    </DropdownMenuItem>
                     {!property.isApproved ? (
                       <DropdownMenuItem onClick={() => onApprove?.(property._id, true)}>
                         <Check className="h-4 w-4 mr-2" />

@@ -20,8 +20,8 @@ export const adminService = {
     return response.data;
   },
 
-  verifyLandlord: async (id: string) => {
-    const response = await api.patch(`/admin/landlords/${id}/verify`);
+  verifyLandlord: async (id: string, isVerified: boolean = true) => {
+    const response = await api.patch(`/admin/landlords/${id}/verify`, { isVerified });
     return response.data;
   },
 
@@ -32,6 +32,11 @@ export const adminService = {
     if (params?.search) searchParams.append('search', params.search);
     if (params?.isApproved) searchParams.append('isApproved', params.isApproved);
     const response = await api.get(`/admin/properties?${searchParams.toString()}`);
+    return response.data;
+  },
+
+  getPropertyById: async (id: string) => {
+    const response = await api.get(`/admin/properties/${id}`);
     return response.data;
   },
 

@@ -92,7 +92,7 @@ export default function AdminPropertiesPage() {
         <Select
           value={isApproved}
           onValueChange={(value) => {
-            setIsApproved(value);
+            setIsApproved(value === 'all' ? '' : value);
             setPage(1);
           }}
         >

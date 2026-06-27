@@ -80,6 +80,7 @@ export const updateUserStatus = catchAsync(async (req: Request, res: Response) =
 
 export const verifyLandlord = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
+  const { isVerified = true } = req.body;
 
   const user = await User.findById(id);
   if (!user) {
@@ -90,10 +91,10 @@ export const verifyLandlord = catchAsync(async (req: Request, res: Response) => 
     throw ApiError.badRequest('User is not a landlord');
   }
 
-  user.isVerified = true;
+  user.isVerified = isVerified;
   await user.save();
 
-  ApiResponse.success(res, user, 'Landlord verified successfully');
+  ApiResponse.success(res, user, `Landlord ${isVerified ? 'verified' : 'unverified'} successfully`);
 });
 
 export const getAllProperties = catchAsync(async (req: Request, res: Response) => {
@@ -118,11 +119,22 @@ export const getAllProperties = catchAsync(async (req: Request, res: Response) =
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limitNum)
-      .populate('landlordId', 'name email'),
+      .populate('landlordId', 'name email phone'),
     Property.countDocuments(query),
   ]);
 
   ApiResponse.paginated(res, properties, total, pageNum, limitNum);
+});
+
+export const getPropertyById = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  const property = await Property.findById(id).populate('landlordId', 'name email phone isVerified');
+  if (!property) {
+    throw ApiError.notFound('Property not found');
+  }
+
+  ApiResponse.success(res, property);
 });
 
 export const approveProperty = catchAsync(async (req: Request, res: Response) => {

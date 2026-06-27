@@ -1,6 +1,5 @@
 'use client';
 
-import { use } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useAdminProperty, useApproveProperty } from '@/hooks/useAdmin';
@@ -14,9 +13,9 @@ import toast from 'react-hot-toast';
 export default function AdminPropertyReviewPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }) {
-  const { id } = use(params);
+  const { id } = params;
   const router = useRouter();
   const { data, isLoading } = useAdminProperty(id);
   const approveProperty = useApproveProperty();

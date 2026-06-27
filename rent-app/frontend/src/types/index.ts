@@ -71,6 +71,8 @@ export interface Inquiry {
   propertyId: Property;
   tenantId: User;
   message: string;
+  reply?: string;
+  repliedAt?: string;
   status: 'pending' | 'read' | 'replied';
   createdAt: string;
 }

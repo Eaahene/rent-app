@@ -56,3 +56,15 @@ export function useUpdateInquiryStatus() {
     },
   });
 }
+
+export function useReplyToInquiry() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, reply }: { id: string; reply: string }) =>
+      inquiryService.replyToInquiry(id, reply),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['inquiries'] });
+    },
+  });
+}

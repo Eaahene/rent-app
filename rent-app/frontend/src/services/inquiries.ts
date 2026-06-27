@@ -25,4 +25,9 @@ export const inquiryService = {
     const response = await api.patch(`/inquiries/${id}/status`, { status });
     return response.data;
   },
+
+  replyToInquiry: async (id: string, reply: string) => {
+    const response = await api.post(`/inquiries/${id}/reply`, { reply });
+    return response.data;
+  },
 };

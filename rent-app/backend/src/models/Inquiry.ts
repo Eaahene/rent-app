@@ -18,6 +18,13 @@ const inquirySchema = new Schema<IInquiry>(
       required: [true, 'Message is required'],
       maxlength: [1000, 'Message cannot exceed 1000 characters'],
     },
+    reply: {
+      type: String,
+      maxlength: [2000, 'Reply cannot exceed 2000 characters'],
+    },
+    repliedAt: {
+      type: Date,
+    },
     status: {
       type: String,
       enum: ['pending', 'read', 'replied'],

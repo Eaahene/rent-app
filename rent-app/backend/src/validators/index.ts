@@ -124,3 +124,9 @@ export const propertySearchSchema = z.object({
     limit: z.coerce.number().int().positive().max(50).optional().default(12),
   }),
 });
+
+export const replyInquirySchema = z.object({
+  body: z.object({
+    reply: z.string().min(1).max(2000),
+  }),
+});

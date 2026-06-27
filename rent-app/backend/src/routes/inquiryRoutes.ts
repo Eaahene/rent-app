@@ -5,10 +5,11 @@ import {
   getMyInquiries,
   getLandlordInquiries,
   updateInquiryStatus,
+  replyToInquiry,
 } from '../controllers/inquiryController';
 import { authenticate, authorize } from '../middleware/auth';
 import { validate } from '../middleware/validate';
-import { createInquirySchema } from '../validators';
+import { createInquirySchema, replyInquirySchema } from '../validators';
 import { UserRole } from '../interfaces';
 
 const router = Router();
@@ -18,5 +19,6 @@ router.get('/me', authenticate, authorize(UserRole.TENANT), getMyInquiries);
 router.get('/landlord', authenticate, authorize(UserRole.LANDLORD, UserRole.ADMIN), getLandlordInquiries);
 router.get('/property/:propertyId', authenticate, authorize(UserRole.LANDLORD, UserRole.ADMIN), getPropertyInquiries);
 router.patch('/:id/status', authenticate, authorize(UserRole.LANDLORD, UserRole.ADMIN), updateInquiryStatus);
+router.post('/:id/reply', authenticate, authorize(UserRole.LANDLORD, UserRole.ADMIN), validate(replyInquirySchema), replyToInquiry);
 
 export default router;

@@ -5,7 +5,7 @@ import { useMyInquiries } from '@/hooks/useInquiries';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { EmptyState } from '@/components/feedback/EmptyState';
-import { MessageSquare } from 'lucide-react';
+import { MessageSquare, Reply } from 'lucide-react';
 import { timeAgo } from '@/lib/utils';
 
 export default function TenantInquiriesPage() {
@@ -28,7 +28,7 @@ export default function TenantInquiriesPage() {
         <div className="space-y-4">
           {inquiries.map((inquiry: any) => (
             <Card key={inquiry._id}>
-              <CardContent className="p-4">
+              <CardContent className="p-4 space-y-3">
                 <div className="flex items-start justify-between">
                   <div className="space-y-1">
                     <Link
@@ -49,6 +49,27 @@ export default function TenantInquiriesPage() {
                     <span className="text-xs text-muted-foreground">{timeAgo(inquiry.createdAt)}</span>
                   </div>
                 </div>
+
+                {inquiry.reply && (
+                  <div className="bg-primary/5 border-l-4 border-primary p-3 rounded-r-lg">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Reply className="h-3 w-3 text-primary" />
+                      <p className="text-xs font-medium text-primary">Landlord&apos;s Reply</p>
+                      {inquiry.repliedAt && (
+                        <span className="text-xs text-muted-foreground">
+                          {timeAgo(inquiry.repliedAt)}
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-sm">{inquiry.reply}</p>
+                  </div>
+                )}
+
+                {!inquiry.reply && (
+                  <p className="text-xs text-muted-foreground italic">
+                    Waiting for landlord to reply...
+                  </p>
+                )}
               </CardContent>
             </Card>
           ))}

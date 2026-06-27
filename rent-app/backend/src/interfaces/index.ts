@@ -81,6 +81,8 @@ export interface IInquiry extends Document {
   propertyId: string;
   tenantId: string;
   message: string;
+  reply?: string;
+  repliedAt?: Date;
   status: 'pending' | 'read' | 'replied';
   createdAt: Date;
 }

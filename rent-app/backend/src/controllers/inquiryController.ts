@@ -77,6 +77,38 @@ export const getLandlordInquiries = catchAsync(async (req: Request, res: Respons
   ApiResponse.success(res, inquiries);
 });
 
+export const replyToInquiry = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { reply } = req.body;
+
+  const inquiry = await Inquiry.findById(id).populate('propertyId');
+  if (!inquiry) {
+    throw ApiError.notFound('Inquiry not found');
+  }
+
+  const property = (inquiry.propertyId as any);
+  if (property.landlordId.toString() !== req.user!._id.toString() && req.user!.role !== 'admin') {
+    throw ApiError.forbidden('Not authorized');
+  }
+
+  inquiry.reply = reply;
+  inquiry.repliedAt = new Date();
+  inquiry.status = 'replied';
+  await inquiry.save();
+
+  // Notify tenant
+  await Notification.create({
+    userId: inquiry.tenantId,
+    title: 'Inquiry Replied',
+    message: `The landlord replied to your inquiry about "${property.title}"`,
+    type: 'inquiry',
+    relatedEntity: inquiry._id,
+    entityType: 'Inquiry',
+  });
+
+  ApiResponse.success(res, inquiry, 'Reply sent successfully');
+});
+
 export const updateInquiryStatus = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   const { status } = req.body;

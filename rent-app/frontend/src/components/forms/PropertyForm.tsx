@@ -435,6 +435,11 @@ export function PropertyForm({ initialData, onSubmit, isLoading }: PropertyFormP
             </p>
           </CardHeader>
           <CardContent className="space-y-4">
+            {images.length === 0 && (
+              <p className="text-sm text-destructive font-medium">
+                You must upload at least 1 image to create a property.
+              </p>
+            )}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {images.map((image, index) => (
                 <div key={index} className="relative aspect-square rounded-lg overflow-hidden border">

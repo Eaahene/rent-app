@@ -34,7 +34,7 @@ export function PropertyGallery({ images }: PropertyGalleryProps) {
     <>
       {/* Main carousel */}
       <div className="space-y-2">
-        <div className="relative aspect-[16/10] overflow-hidden rounded-lg group cursor-pointer" onClick={() => { setLightboxIndex(currentIndex); setLightboxOpen(true); }}>
+        <div className="relative aspect-video max-h-[400px] overflow-hidden rounded-lg group cursor-pointer" onClick={() => { setLightboxIndex(currentIndex); setLightboxOpen(true); }}>
           <Image
             src={images[currentIndex].url}
             alt={`Property image ${currentIndex + 1}`}
@@ -89,7 +89,7 @@ export function PropertyGallery({ images }: PropertyGalleryProps) {
             {images.map((image, index) => (
               <button
                 key={index}
-                className={`relative flex-shrink-0 w-20 h-16 rounded-md overflow-hidden border-2 transition-all ${
+                className={`relative flex-shrink-0 w-16 h-12 rounded-md overflow-hidden border-2 transition-all ${
                   index === currentIndex ? 'border-primary' : 'border-transparent opacity-60 hover:opacity-100'
                 }`}
                 onClick={() => setCurrentIndex(index)}

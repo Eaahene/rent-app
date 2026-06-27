@@ -108,8 +108,9 @@ export function PropertyForm({ initialData, onSubmit, isLoading }: PropertyFormP
       const newImages = response.data;
       form.setValue('images', [...images, ...newImages]);
       toast.success(`${newImages.length} image(s) uploaded successfully`);
-    } catch (error) {
-      toast.error('Failed to upload images');
+    } catch (error: any) {
+      const msg = error?.response?.data?.message || error?.message || 'Failed to upload images';
+      toast.error(msg);
     } finally {
       setUploadingImages(false);
       e.target.value = '';

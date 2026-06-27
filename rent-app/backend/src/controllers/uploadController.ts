@@ -7,7 +7,7 @@ export const uploadImages = catchAsync(async (req: Request, res: Response) => {
   const files = req.files as Express.Multer.File[];
 
   if (!files || files.length === 0) {
-    throw ApiError.badRequest('No images uploaded');
+    throw ApiError.badRequest('No images uploaded. Please select image files.');
   }
 
   const images = files.map((file) => ({
@@ -15,13 +15,17 @@ export const uploadImages = catchAsync(async (req: Request, res: Response) => {
     publicId: file.filename,
   }));
 
-  ApiResponse.created(res, images, 'Images uploaded successfully');
+  ApiResponse.created(res, images, `${images.length} image(s) uploaded successfully`);
 });
 
 export const deleteImage = catchAsync(async (req: Request, res: Response) => {
   const { publicId } = req.params;
 
-  await cloudinary.uploader.destroy(publicId);
+  try {
+    await cloudinary.uploader.destroy(publicId);
+  } catch (e) {
+    // Image may already be deleted
+  }
 
   ApiResponse.success(res, null, 'Image deleted successfully');
 });

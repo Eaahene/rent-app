@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
-import { Sidebar } from '@/components/layout/Sidebar';
+import { Sidebar, MobileSidebar } from '@/components/layout/Sidebar';
 import { UserRole } from '@/types';
 import { useEffect } from 'react';
 
@@ -38,7 +38,8 @@ export default function LandlordDashboardLayout({
   return (
     <div className="flex">
       <Sidebar role={UserRole.LANDLORD} />
-      <div className="flex-1 p-6">{children}</div>
+      <MobileSidebar role={UserRole.LANDLORD} />
+      <div className="flex-1 p-6 min-w-0">{children}</div>
     </div>
   );
 }

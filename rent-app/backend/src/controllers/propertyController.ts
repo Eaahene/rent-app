@@ -15,10 +15,19 @@ export const getProperties = catchAsync(async (req: Request, res: Response) => {
   const query: any = { isApproved: true };
 
   if (region) query.region = { $regex: region, $options: 'i' };
-  if (city) query.city = { $regex: city, $options: 'i' };
   if (area) query.area = { $regex: area, $options: 'i' };
   if (propertyType) query.propertyType = propertyType;
   if (status) query.status = status;
+
+  // City search also checks area and address
+  if (city) {
+    query.$or = [
+      { city: { $regex: city, $options: 'i' } },
+      { area: { $regex: city, $options: 'i' } },
+      { address: { $regex: city, $options: 'i' } },
+      { title: { $regex: city, $options: 'i' } },
+    ];
+  }
 
   if (minPrice || maxPrice) {
     query.price = {};

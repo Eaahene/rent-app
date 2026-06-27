@@ -102,3 +102,25 @@ export function useToggleFeatured() {
     },
   });
 }
+
+export function useCreatePropertyForLandlord() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: adminService.createPropertyForLandlord,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'properties'] });
+      queryClient.invalidateQueries({ queryKey: ['properties'] });
+    },
+  });
+}
+
+export function useAllLandlords() {
+  return useQuery({
+    queryKey: ['admin', 'landlords'],
+    queryFn: async () => {
+      const response = await adminService.getAllLandlords();
+      return response;
+    },
+  });
+}

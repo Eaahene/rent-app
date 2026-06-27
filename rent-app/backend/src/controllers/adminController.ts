@@ -178,3 +178,34 @@ export const toggleFeatured = catchAsync(async (req: Request, res: Response) => 
 
   ApiResponse.success(res, property, `Property ${property.isFeatured ? 'featured' : 'unfeatured'}`);
 });
+
+export const createPropertyForLandlord = catchAsync(async (req: Request, res: Response) => {
+  const { landlordId, ...propertyData } = req.body;
+
+  if (!landlordId) {
+    throw ApiError.badRequest('Landlord ID is required');
+  }
+
+  const landlord = await User.findById(landlordId);
+  if (!landlord || landlord.role !== UserRole.LANDLORD) {
+    throw ApiError.badRequest('Invalid landlord. Must be a user with landlord role.');
+  }
+
+  const property = await Property.create({
+    ...propertyData,
+    landlordId,
+    isApproved: true, // Admin-created properties are auto-approved
+  });
+
+  await property.populate('landlordId', 'name avatar isVerified phone email');
+
+  ApiResponse.created(res, property, 'Property created successfully');
+});
+
+export const getAllLandlords = catchAsync(async (req: Request, res: Response) => {
+  const landlords = await User.find({ role: UserRole.LANDLORD })
+    .select('name email phone isVerified')
+    .sort({ name: 1 });
+
+  ApiResponse.success(res, landlords);
+});

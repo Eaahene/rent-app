@@ -54,4 +54,14 @@ export const adminService = {
     const response = await api.patch(`/admin/properties/${id}/featured`);
     return response.data;
   },
+
+  createPropertyForLandlord: async (data: any) => {
+    const response = await api.post('/admin/properties', data);
+    return response.data;
+  },
+
+  getAllLandlords: async () => {
+    const response = await api.get('/admin/landlords');
+    return response.data;
+  },
 };

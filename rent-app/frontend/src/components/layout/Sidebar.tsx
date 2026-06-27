@@ -41,6 +41,7 @@ const adminLinks = [
   { href: '/admin/dashboard', label: 'Overview', icon: LayoutDashboard },
   { href: '/admin/dashboard/users', label: 'Users', icon: Users },
   { href: '/admin/dashboard/properties', label: 'Properties', icon: Building2 },
+  { href: '/admin/dashboard/properties/new', label: 'Add Property', icon: Plus },
   { href: '/admin/dashboard/settings', label: 'Settings', icon: Settings },
 ];
 

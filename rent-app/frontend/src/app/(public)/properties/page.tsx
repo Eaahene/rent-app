@@ -6,6 +6,7 @@ import { PropertyFilters } from '@/components/property/PropertyFilters';
 import { PropertyListSkeleton } from '@/components/property/PropertySkeleton';
 import { EmptyState } from '@/components/feedback/EmptyState';
 import { useProperties } from '@/hooks/useProperties';
+import { SearchParams } from '@/types';
 import { useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
@@ -14,7 +15,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 function PropertiesContent() {
   const searchParams = useSearchParams();
 
-  const params = {
+  const params: SearchParams = {
     region: searchParams.get('region') || undefined,
     city: searchParams.get('city') || undefined,
     propertyType: searchParams.get('propertyType') || undefined,

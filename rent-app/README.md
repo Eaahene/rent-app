@@ -146,22 +146,8 @@ cp .env.example .env.local
 npm run dev
 ```
 
-### 4. Access the application
 
-- **Frontend:** http://localhost:3000
-- **Backend API:** http://localhost:5000/api
 
-## Test Accounts
-
-After running the seed command:
-
-| Role | Email | Password |
-|------|-------|----------|
-| Admin | admin@rentapp.com | admin123 |
-| Landlord | sarah@landlord.com | landlord123 |
-| Landlord | michael@landlord.com | landlord123 |
-| Tenant | john@tenant.com | tenant123 |
-| Tenant | jane@tenant.com | tenant123 |
 
 ## API Endpoints
 

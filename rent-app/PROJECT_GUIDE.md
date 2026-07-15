@@ -559,17 +559,6 @@ Backend model exists at `backend/src/models/Notification.ts`. Backend creates no
 
 ---
 
-## Database Seed Data
 
-When you run `npm run seed`, it creates:
-
-| User | Email | Password | Role |
-|---|---|---|---|
-| Admin User | admin@rentapp.com | Admin@12345 | admin |
-| Sarah Johnson | sarah@landlord.com | landlord123 | landlord (verified) |
-| Michael Owusu | michael@landlord.com | landlord123 | landlord (verified) |
-| Grace Mensah | grace@landlord.com | landlord123 | landlord (NOT verified) |
-| John Doe | john@tenant.com | tenant123 | tenant |
-| Jane Smith | jane@tenant.com | tenant123 | tenant |
 
 8 properties seeded across Ghana with realistic data (Accra, Kumasi, Takoradi, Cape Coast, Tema).
